@@ -13,7 +13,7 @@
     "types": [
       {
         "name": "Msg",
-        "comment": " ",
+        "comment": " The type representing messages that are passed inside the Rating.\n    Notice: AddNewMessage receive two params: Float will be time to display and Html Msg will be a html struture.\n        Tip: Use Css to improve Html Msg.\n",
         "args": [],
         "cases": [
           [
