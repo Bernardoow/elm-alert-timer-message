@@ -70,7 +70,10 @@ type alias Message =
     }
 
 
-{-| -}
+{-| The type representing messages that are passed inside the Rating.
+    Notice: AddNewMessage receive two params: Float will be time to display and Html Msg will be a html struture.
+        Tip: Use Css to improve Html Msg.
+-}
 type Msg
     = AddNewMessage Float (Html Msg)
     | RemoveAlert Int

@@ -29,20 +29,20 @@ update msg model =
     case msg of
         AlertTimer msg ->
             let
-                ( updateModal, subCmd ) =
+                ( updateModel, subCmd ) =
                     AlertTimerMessage.update msg model.alert_messages
             in
-                { model | alert_messages = updateModal } ! [ Cmd.map AlertTimer subCmd ]
+                { model | alert_messages = updateModel } ! [ Cmd.map AlertTimer subCmd ]
 
         AddNewMessage time ->
             let
                 newMsg =
                     AlertTimerMessage.AddNewMessage time <| div [ id "toast-container", class "toast-top-right" ] [ div [ class "toast toast-error" ] [ div [] [ text "Teste Alert" ] ] ]
 
-                ( updateModal, subCmd ) =
+                ( updateModel, subCmd ) =
                     AlertTimerMessage.update newMsg model.alert_messages
             in
-                { model | alert_messages = updateModal } ! [ Cmd.map AlertTimer subCmd ]
+                { model | alert_messages = updateModel } ! [ Cmd.map AlertTimer subCmd ]
 
 
 subscriptions : Model -> Sub Msg

@@ -4,8 +4,7 @@
     "repository": "https://github.com/Bernardoow/elm-alert-timer-message.git",
     "license": "MIT",
     "source-directories": [
-        "."
-        ,"src"
+        "src"
     ],
     "exposed-modules": ["AlertTimerMessage"],
     "dependencies": {
