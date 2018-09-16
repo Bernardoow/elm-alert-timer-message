@@ -3,7 +3,7 @@
     "name": "Bernardoow/elm-alert-timer-message",
     "summary": "Simple message alert library.",
     "license": "MIT",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "exposed-modules": [
         "AlertTimerMessage"
     ],
