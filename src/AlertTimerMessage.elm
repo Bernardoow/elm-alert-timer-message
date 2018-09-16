@@ -1,36 +1,50 @@
-module AlertTimerMessage exposing (Model, view, update, modelInit, Msg(..))
+module AlertTimerMessage exposing
+    ( Model
+    , modelInit
+    , view
+    , Msg(..)
+    , update
+    )
 
 {-| Simple message alert library.
 Its functionality is to hide and show alerts.
 The module is given a time and an HTML structure then does the job.
 You can create css and pass the msg to display.
 
+
 # The model
+
 @docs Model
 
+
 # The initial state
+
 @docs modelInit
+
 
 # View
+
 @docs view
 
+
 # Msg
+
 @docs Msg
 
+
 # Update
+
 @docs update
 
-# The initial state
-@docs modelInit
 -}
 
+import Dict exposing (Dict, empty, insert, remove, size, toList, values)
 import Html exposing (..)
 import Html.Events exposing (..)
+import List
 import Process
 import Task
-import Time exposing (Time)
-import Dict exposing (Dict, values, empty, insert, size, toList, remove)
-import List
+
 
 
 --http://stackoverflow.com/questions/40599512/how-to-achieve-behavior-of-settimeout-in-elm
@@ -38,9 +52,9 @@ import List
 
 {-| Use Core Process to wait some seconds to hidden the alert.
 -}
-delay : Time -> msg -> Cmd msg
+delay : Float -> msg -> Cmd msg
 delay time msg =
-    Process.sleep time
+    Process.sleep (time * 1000)
         |> Task.andThen (always <| Task.succeed msg)
         |> Task.perform identity
 
@@ -71,8 +85,8 @@ type alias Message =
 
 
 {-| The type representing messages that are passed inside the Rating.
-    Notice: AddNewMessage receive two params: Float will be time to display and Html Msg will be a html struture.
-        Tip: Use Css to improve Html Msg.
+Notice: AddNewMessage receive two params: Float will be time to display and Html Msg will be a html struture.
+Tip: Use Css to improve Html Msg.
 -}
 type Msg
     = AddNewMessage Float (Html Msg)
@@ -94,14 +108,18 @@ update msg model =
                 newModel =
                     { model | messages = novo, count = new_position }
             in
-                newModel ! [ delay (Time.second * seconds) <| RemoveAlert new_position ]
+            ( newModel
+            , delay seconds <| RemoveAlert new_position
+            )
 
         RemoveAlert position ->
             let
                 newDict =
                     remove position model.messages
             in
-                { model | messages = newDict } ! []
+            ( { model | messages = newDict }
+            , Cmd.none
+            )
 
 
 {-| -}
@@ -110,7 +128,7 @@ view model =
     let
         list_of_messages =
             List.map (\item -> item.message) <|
-                values (model.messages)
+                values model.messages
     in
-        div []
-            list_of_messages
+    div []
+        list_of_messages

@@ -11,9 +11,7 @@
 <div id="elm"></div>
 
 <script type="text/javascript">
-     var node = document.getElementById('elm');
-     var app = Elm.Basic.embed(node);
-
+     var app = Elm.Toastr.init({node: document.getElementById('elm')});
 </script>
 
 </body>

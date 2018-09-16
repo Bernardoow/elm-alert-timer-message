@@ -1,6 +1,7 @@
-module Basic exposing (..)
+module Bootstrap exposing (Model, Msg(..), initial, main, subscriptions, update, view)
 
 import AlertTimerMessage exposing (..)
+import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -27,12 +28,14 @@ view model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        AlertTimer msg ->
+        AlertTimer alertTimeMsg ->
             let
                 ( updateModel, subCmd ) =
-                    AlertTimerMessage.update msg model.alert_messages
+                    AlertTimerMessage.update alertTimeMsg model.alert_messages
             in
-                { model | alert_messages = updateModel } ! [ Cmd.map AlertTimer subCmd ]
+            ( { model | alert_messages = updateModel }
+            , Cmd.map AlertTimer subCmd
+            )
 
         AddNewMessage time ->
             let
@@ -42,7 +45,9 @@ update msg model =
                 ( updateModel, subCmd ) =
                     AlertTimerMessage.update newMsg model.alert_messages
             in
-                { model | alert_messages = updateModel } ! [ Cmd.map AlertTimer subCmd ]
+            ( { model | alert_messages = updateModel }
+            , Cmd.map AlertTimer subCmd
+            )
 
 
 subscriptions : Model -> Sub Msg
@@ -50,15 +55,15 @@ subscriptions model =
     Sub.none
 
 
-initial : Model
-initial =
-    Model AlertTimerMessage.modelInit
+initial : () -> ( Model, Cmd Msg )
+initial _ =
+    ( Model AlertTimerMessage.modelInit, Cmd.none )
 
 
-main : Program Never Model Msg
+main : Program () Model Msg
 main =
-    program
-        { init = ( initial, Cmd.none )
+    Browser.element
+        { init = initial
         , view = view
         , update = update
         , subscriptions = subscriptions
